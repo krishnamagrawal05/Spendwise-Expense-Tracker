@@ -1,3 +1,7 @@
+## 🚀 Live Demo
+👉 [Open SpendWise Live]
+(https://spendwise-expense-tracker-nbyx.onrender.com)
+
 # SpendWise - Expense Tracker
 
 A complete personal-finance web app built with **Python**, **Flask**, **SQLite**, and vanilla **HTML / CSS / JavaScript**.
