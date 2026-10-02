@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="toolbar">
+    <form class="filter-bar" id="txFilters">
+        <label class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span class="sr-only">Search transactions</span>
+            <input type="search" name="q" placeholder="Search transactions">
+        </label>
+        <label>
+            <span class="sr-only">Type</span>
+            <select name="type">
+                <option value="">All types</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+        </label>
+        <label>
+            <span class="sr-only">Category</span>
+            <select name="category">
+                <option value="">All categories</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span class="sr-only">From date</span>
+            <input type="date" name="from">
+        </label>
+        <label>
+            <span class="sr-only">To date</span>
+            <input type="date" name="to">
+        </label>
+        <label>
+            <span class="sr-only">Sort</span>
+            <select name="sort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="highest">Highest amount</option>
+                <option value="lowest">Lowest amount</option>
+            </select>
+        </label>
+    </form>
+</section>
+
+<section class="panel">
+    <div class="table-wrap desktop-only" id="txTableWrap"></div>
+    <div class="card-list mobile-only" id="txCardList"></div>
+</section>
+{% endblock %}

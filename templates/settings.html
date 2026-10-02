@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="settings-grid">
+    <article class="panel">
+        <h3>Appearance</h3>
+        <p class="muted">Choose a polished light or dark workspace.</p>
+        <div class="setting-row">
+            <span>Theme</span>
+            <button class="theme-toggle" id="settingsThemeToggle" type="button" aria-label="Toggle color theme">
+                <span class="theme-option" data-theme-value="light"><i class="fa-solid fa-sun"></i> Light</span>
+                <span class="theme-option" data-theme-value="dark"><i class="fa-solid fa-moon"></i> Dark</span>
+            </button>
+        </div>
+    </article>
+
+    <article class="panel">
+        <h3>Currency</h3>
+        <p class="muted">Amounts update everywhere after you choose a currency.</p>
+        <label>
+            Display currency
+            <select id="currencySelect">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+                <option value="GBP">£ GBP</option>
+            </select>
+        </label>
+    </article>
+
+    <article class="panel">
+        <h3>Profile</h3>
+        <p class="muted">This is stored on this device only. No login is required.</p>
+        <label>
+            Display name
+            <input type="text" id="settingsName" maxlength="40" value="Krishnam">
+        </label>
+        <button class="btn primary" type="button" id="saveProfile">Save profile</button>
+    </article>
+
+    <article class="panel">
+        <h3>Budget</h3>
+        <p class="muted">Set a monthly spending limit. SpendWise will show progress on the dashboard.</p>
+        <label>
+            Monthly limit
+            <input type="number" id="budgetAmount" min="1" step="0.01" placeholder="e.g. 25000">
+        </label>
+        <div class="setting-row" style="margin-top:12px">
+            <label>Month <input type="month" id="budgetMonth"></label>
+            <button class="btn primary" type="button" id="saveBudget"><i class="fa-solid fa-floppy-disk"></i> Save budget</button>
+        </div>
+        <button class="btn ghost" type="button" id="removeBudget" style="margin-top:10px"><i class="fa-solid fa-trash"></i> Remove this month's budget</button>
+    </article>
+
+    <article class="panel">
+        <h3>Notifications & sounds</h3>
+        <label class="check-row">
+            <input type="checkbox" id="notifyToasts" checked>
+            Show success toasts after adding, editing, or deleting
+        </label>
+        <label class="check-row">
+            <input type="checkbox" id="notifyInsights" checked>
+            Show insight reminders on the dashboard
+        </label>
+        <label class="check-row">
+            <input type="checkbox" id="soundEffects" checked>
+            Play subtle interface sounds
+        </label>
+        <label class="check-row">
+            <input type="checkbox" id="voiceSummary" checked>
+            Read a transaction summary after saving
+        </label>
+    </article>
+
+    <article class="panel danger-panel">
+        <h3>Data</h3>
+        <p class="muted">Demo data is tagged separately from your own transactions.</p>
+        <div class="button-row">
+            <button class="btn" type="button" id="loadDemo">Load demo data</button>
+            <button class="btn" type="button" id="resetDemo">Reset demo data</button>
+            <button class="btn danger" type="button" id="clearAll">Clear all transactions</button>
+        </div>
+    </article>
+</section>
+{% endblock %}

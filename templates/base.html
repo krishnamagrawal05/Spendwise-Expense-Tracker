@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spendwise - Expense Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235b8cff'/%3E%3Cpath d='M16 40 L28 26 L38 36 L50 18' stroke='white' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const saved = localStorage.getItem("spendwise-theme") || "dark";
+            document.documentElement.setAttribute("data-theme", saved);
+        })();
+    </script>
+</head>
+<body>
+    <div class="app-shell">
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
+                <div>
+                    <strong>Spendwise</strong>
+                    <small>Personal finance</small>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                <a class="nav-link {% if active_page == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">
+                    <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-link {% if active_page == 'transactions' %}is-active{% endif %}" href="{{ url_for('transactions') }}">
+                    <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+                    <span>Transactions</span>
+                </a>
+                <a class="nav-link {% if active_page == 'analytics' %}is-active{% endif %}" href="{{ url_for('analytics') }}">
+                    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+                    <span>Analytics</span>
+                </a>
+                <a class="nav-link {% if active_page == 'categories' %}is-active{% endif %}" href="{{ url_for('categories') }}">
+                    <i class="fa-solid fa-tags" aria-hidden="true"></i>
+                    <span>Categories</span>
+                </a>
+                <a class="nav-link {% if active_page == 'settings' %}is-active{% endif %}" href="{{ url_for('settings') }}">
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+                    <span class="theme-option" data-theme-value="light"><i class="fa-solid fa-sun"></i> Light</span>
+                    <span class="theme-option" data-theme-value="dark"><i class="fa-solid fa-moon"></i> Dark</span>
+                </button>
+                <div class="profile-card">
+                    <div class="avatar" id="profileAvatar">KR</div>
+                    <div>
+                        <strong id="profileName">Krishnam</strong>
+                        <small>Personal Finance</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-wrap">
+            <header class="topbar">
+                <button class="icon-btn hamburger" id="menuToggle" type="button" aria-label="Open navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>{{ page_title }}</h1>
+                    <p class="muted" id="headerDate"></p>
+                </div>
+                <form class="global-search" id="globalSearchForm" role="search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <label class="sr-only" for="globalSearch">Search transactions</label>
+                    <input id="globalSearch" name="q" type="search" placeholder="Search title, category, amount...">
+                </form>
+                <button class="icon-btn" id="notifyBtn" type="button" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <button class="btn primary add-btn" id="openAddModal" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Transaction</span>
+                </button>
+            </header>
+
+            <main class="page-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="txModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="txModalTitle">
+            <div class="modal-head">
+                <h2 id="txModalTitle">Add Transaction</h2>
+                <button class="icon-btn" type="button" data-close-modal aria-label="Close dialog">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="txForm">
+                <input type="hidden" id="txId">
+                <div class="type-switch" role="group" aria-label="Transaction type">
+                    <button type="button" class="type-btn is-active" data-type="income">Income</button>
+                    <button type="button" class="type-btn" data-type="expense">Expense</button>
+                </div>
+                <label>
+                    Amount
+                    <input id="txAmount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+                </label>
+                <label>
+                    Title
+                    <div class="input-with-action">
+                        <input id="txTitle" type="text" maxlength="120" required placeholder="Salary, groceries, rent...">
+                        <button class="field-action" type="button" id="voiceTitleBtn" aria-label="Speak transaction title" title="Voice input"><i class="fa-solid fa-microphone"></i></button>
+                    </div>
+                </label>
+                <label>
+                    Category
+                    <select id="txCategory" required>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>
+                    Date
+                    <input id="txDate" type="date" required>
+                </label>
+                <label>
+                    Description
+                    <div class="input-with-action textarea-action">
+                        <textarea id="txDescription" maxlength="500" rows="3" placeholder="Optional notes"></textarea>
+                        <button class="field-action" type="button" id="voiceDescriptionBtn" aria-label="Speak transaction description" title="Voice input"><i class="fa-solid fa-microphone"></i></button>
+                    </div>
+                </label>
+                <div class="modal-actions">
+                    <button class="btn ghost" type="button" data-close-modal>Cancel</button>
+                    <button class="btn primary" type="submit" id="txSubmit">Add Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="confirmModal" hidden>
+        <div class="modal compact" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <h2 id="confirmTitle">Delete this transaction?</h2>
+            <p class="muted" id="confirmText">This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn ghost" type="button" data-close-confirm>Cancel</button>
+                <button class="btn danger" type="button" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="toolbar">
+    <div class="period-tabs" id="periodTabs" role="tablist" aria-label="Date range">
+        <button type="button" class="chip-btn" data-period="today">Today</button>
+        <button type="button" class="chip-btn" data-period="this_week">This Week</button>
+        <button type="button" class="chip-btn is-active" data-period="this_month">This Month</button>
+        <button type="button" class="chip-btn" data-period="last_month">Last Month</button>
+        <button type="button" class="chip-btn" data-period="custom">Custom Range</button>
+    </div>
+    <div class="custom-range" id="customRange" hidden>
+        <label>From <input type="date" id="customFrom"></label>
+        <label>To <input type="date" id="customTo"></label>
+        <button class="btn primary" type="button" id="applyCustom">Apply</button>
+    </div>
+</section>
+
+<section class="stat-grid compact" id="analyticsStats"></section>
+<div id="analyticsEmpty"></div>
+
+<section class="chart-grid">
+    <article class="panel">
+        <h3>Expense by category</h3>
+        <div class="chart-box"><canvas id="categoryChart"></canvas></div>
+        <p class="muted chart-note" id="categoryChartNote" hidden></p>
+    </article>
+    <article class="panel">
+        <h3>Income vs expense</h3>
+        <div class="chart-box"><canvas id="incomeExpenseChart"></canvas></div>
+    </article>
+    <article class="panel">
+        <h3>Monthly spending</h3>
+        <div class="chart-box"><canvas id="monthlyChart"></canvas></div>
+    </article>
+    <article class="panel">
+        <h3>Daily spending</h3>
+        <div class="chart-box"><canvas id="dailyChart"></canvas></div>
+    </article>
+    <article class="panel wide">
+        <h3>Savings trend</h3>
+        <div class="chart-box"><canvas id="savingsChart"></canvas></div>
+    </article>
+</section>
+{% endblock %}

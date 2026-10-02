@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-row">
+    <div>
+        <p class="eyebrow" id="greeting">Good evening 👋</p>
+        <h2>Here's your financial overview</h2>
+    </div>
+    <label class="month-picker">
+        <span class="sr-only">Select month</span>
+        <i class="fa-regular fa-calendar"></i>
+        <input type="month" id="monthSelect">
+    </label>
+</section>
+
+<section class="stat-grid" id="statGrid" aria-live="polite">
+    <article class="stat-card skeleton-card"></article>
+    <article class="stat-card skeleton-card"></article>
+    <article class="stat-card skeleton-card"></article>
+    <article class="stat-card skeleton-card"></article>
+</section>
+
+<section class="budget-panel panel" id="budgetPanel">
+    <div class="panel-head">
+        <div>
+            <h3>Monthly budget</h3>
+            <p class="muted" id="budgetStatusText">Set a limit to keep spending on track.</p>
+        </div>
+        <button class="btn ghost" type="button" id="editBudgetBtn"><i class="fa-solid fa-sliders"></i> Set budget</button>
+    </div>
+    <div class="budget-progress-wrap">
+        <div class="budget-progress"><span id="budgetProgress"></span></div>
+        <div class="budget-meta"><strong id="budgetSpent">₹0</strong><span id="budgetLimit">No limit set</span></div>
+    </div>
+</section>
+
+<section class="split-grid">
+    <article class="panel">
+        <div class="panel-head">
+            <h3>Monthly summary</h3>
+            <span class="chip" id="summaryMonth">—</span>
+        </div>
+        <div class="summary-grid" id="monthlySummary">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+        </div>
+    </article>
+    <article class="panel">
+        <div class="panel-head">
+            <h3>Insights</h3>
+        </div>
+        <div class="insight-list" id="insightList">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+        </div>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h3>Recent transactions</h3>
+        <a class="text-link" href="{{ url_for('transactions') }}">View all transactions</a>
+    </div>
+    <div id="recentList"></div>
+</section>
+{% endblock %}
